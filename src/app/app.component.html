@@ -1,0 +1,111 @@
+<div class="page-wrap">
+
+  <div class="card container" [@flipState]="flip" > <!-- Credit Card-->
+    <div >
+        <div class="front front-animation" > <!--*ngIf="!show_card_back"-->
+            <img class="chip" src="../assets/images/chip.jpg"/>
+            <div class="card-number"> {{card_number_str}}</div>
+            <div class="container">
+              <div class="card-name">{{card_name}}</div>
+              <div class="card-expiry"><div class="valid">valid thru<br/></div> {{card_expiry_str}}</div>
+            </div>
+        </div>
+        <div class="back back-animation"> <!-- *ngIf="show_card_back" -->
+          <img class="strip" src="../assets/images/background_strip.png"/>
+          <img class="signature" src="../assets/images/card_strip.PNG" />
+          <div class="cvv">{{card.cvc}}</div>
+        </div>
+    </div>
+  </div>
+
+    <div>
+        <form name="form" (ngSubmit)="f.form.valid && onSubmit(f)" #f="ngForm" novalidate>
+
+          <div class="">
+            <input
+             type="tel"
+             name="card_number"
+             #card_number="ngModel"
+             placeholder="Card Number"
+             required
+             [(ngModel)]="card.number"
+             (ngModelChange)="addToCardNumber($event)"
+             (click)="showFront()"
+             [ngClass]="{ 'is-invalid': f.submitted && card_number.invalid }"
+             maxlength="16"
+             >
+          <p class="small">E.g.: 49....., 51..., 36...., 37...</p>
+          <div *ngIf="f.submitted && card_number.invalid" class="invalid-feedback">
+              <div *ngIf="card_number.errors.required">Card Number is required.</div>
+          </div>
+          </div>
+
+          <div class="">
+            <input
+            type="text"
+            name="card_Name"
+            #card_Name="ngModel"
+            placeholder="Name"
+            required
+            [(ngModel)]="card.name"
+            (ngModelChange)="addToCardName($event)"
+            (click)="showFront()"
+            [ngClass]="{ 'is-invalid': f.submitted && card_Name.invalid }"
+             >
+             <div *ngIf="f.submitted && card_Name.invalid" class="invalid-feedback">
+                <div *ngIf="card_Name.errors.required">Card Name is required.</div>
+            </div>
+          </div>
+
+          <div>
+              <div class="expiry-input">
+                  <input
+                  type="tel"
+                  name="card_expiry"
+                  #card_expiry="ngModel"
+                  placeholder="Valid Thru"
+                  required
+                  [(ngModel)]="card.expiry"
+                  (ngModelChange)="addToCardExpiry($event)"
+                  (click)="showFront()"
+                  [ngClass]="{ 'is-invalid': f.submitted && card_expiry.invalid }"
+                  maxlength="4"
+                  >
+                  <div *ngIf="f.submitted && card_expiry.invalid" class="invalid-feedback">
+                    <div *ngIf="card_expiry.errors.required">Card expiry date is required.</div>
+                  </div>
+                </div>
+
+                <div class="cvc-input">
+                  <input
+                  type="tel"
+                  name="card_cvc"
+                  #card_cvc="ngModel"
+                  placeholder="CVC"
+                  required
+                  [(ngModel)]="card.cvc"
+                  (click)="showBack()"
+                  [ngClass]="{ 'is-invalid': f.submitted && card_cvc.invalid }"
+                  maxlength="4"
+                  >
+                  <div *ngIf="f.submitted && card_cvc.invalid" class="invalid-feedback">
+                    <div *ngIf="card_cvc.errors.required">Card CVC code is required.</div>
+                  </div>
+                </div>
+
+          </div>
+
+          <button class="btn" type="submit">PAY</button>
+        </form>
+        </div>
+
+        <div>
+            <p>Number: {{cardNumber}}</p>
+            <p>Name: {{cardName}}</p>
+            <p>Expiry: {{cardExpiry}}</p>
+            <p>CVC: {{cardCVV}}</p>
+        </div>
+
+</div>
+
+
